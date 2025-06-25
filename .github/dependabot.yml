@@ -1,0 +1,22 @@
+---
+version: 2
+registries:
+  ghcr:  # Define access for a private registry
+    type: docker-registry
+    url: ghcr.io
+    username: PAT
+    password: ${{secrets.CONTAINER_BUILDER_TOKEN}}
+updates:
+  - package-ecosystem: "docker"
+    directory: "/"
+    registries:
+      - ghcr  # Allow version updates for dependencies in this registry
+    schedule:
+      interval: "weekly"
+      time: "21:00"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "github/internal-actions"
